@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace MusicStreamer
 {
@@ -16,13 +17,13 @@ namespace MusicStreamer
             public int Connections;
             public List<MusicFile> Queue;
         }
-
         public bool IsActive { get; set; }
 
         public event Func<MusicPlayerStatus, object> OnStatusUpdate;
         public event Func<List<MusicFile>, object> OnFileListUpdate;
 
         ConcurrentQueue<MusicFile> Queue = new ConcurrentQueue<MusicFile>();
+
         private Thread PlayerThread { get; set; }
         ConcurrentDictionary<Stream, DateTime> OutputStreams { get; set; }
 
@@ -30,8 +31,18 @@ namespace MusicStreamer
         {
             OutputStreams = new ConcurrentDictionary<Stream, DateTime>();
             IsActive = true;
-            PlayerThread = new Thread(new ThreadStart(PlayerAsync));
+            PlayerThread = new Thread(new ThreadStart(Player));
             PlayerThread.Start();
+        }
+
+        public void ClearQueue()
+        {
+            MusicFile musicFile;
+            while (!Queue.IsEmpty)
+            {
+                Queue.TryDequeue(out musicFile);
+            }
+            if (OnFileListUpdate != null) OnFileListUpdate.Invoke(Queue.ToList());
         }
 
         public void EnqueueMusic(MusicFile file)
@@ -51,7 +62,7 @@ namespace MusicStreamer
             OutputStreams.TryRemove(outputStream, out DateTime value);
         }
 
-        void PlayerAsync()
+        void Player()
         {
             MusicFile file;
             while (IsActive)
@@ -59,12 +70,19 @@ namespace MusicStreamer
                 do
                 {
                     Queue.TryDequeue(out file);
-                    Thread.Sleep(2);
                     if (!IsActive) return;
                 } while (file == null);
                 if (OnFileListUpdate != null) OnFileListUpdate.Invoke(Queue.ToList());
-                file.Open();
-                Mp3Frame frame = file.GetFrame();
+                Mp3Frame frame = null;
+                try
+                {
+                    file.Open();
+                    frame = file.GetFrame();
+                }
+                catch (Exception)
+                {
+                    Logger.SetError(string.Format("MusicPlayer error: 'can't decode file [{0}]'", file.Filename));
+                }
                 while (frame != null)
                 {
                     foreach (Stream output in OutputStreams.Keys)
@@ -72,7 +90,7 @@ namespace MusicStreamer
                         try
                         {
                             output.WriteAsync(frame.RawData, 0, frame.RawData.Length);
-                            output.Flush();
+                            output.FlushAsync();
                         }
                         catch
                         {
@@ -91,7 +109,7 @@ namespace MusicStreamer
                             Queue = Queue.ToList()
                         });
                     }
-                }
+                }    
             }
         }
 

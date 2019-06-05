@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace MusicStreamer
@@ -36,12 +37,13 @@ namespace MusicStreamer
                 Invoke(new Action(() =>
                 {
                     lbCurrentTrack.Text = arg.CurrentFile.Title + " - " + arg.CurrentFile.Artist;
-                    lbConnectionsCount.Text = string.Format("Clients: {0}", arg.Connections);
+                    
+                    lbConnectionsCount.Text = string.Format("{0}", arg.Connections);
                 }));
             }
-            catch
+            catch (Exception e)
             {
-                Console.WriteLine("Nothing to update!");
+                Logger.SetError(string.Format("Player_OnStatusUpdate error: [{0}]", e.Message));
             }
             return null;
         }
@@ -84,6 +86,11 @@ namespace MusicStreamer
             {
                 lvFiles.Items.Remove(lvFiles.SelectedItems[0]);
             }
+        }
+
+        private void BtnClearQueue_Click(object sender, EventArgs e)
+        {
+            Streamer.Player.ClearQueue();
         }
     }
 }

@@ -7,7 +7,6 @@ namespace MusicStreamer
 {
     class Streamer : IDisposable
     {
-        //private bool IsDisposed { get; set; }
         private bool IsWaiting { get; set; }
         public MusicPlayer Player;
         private readonly HttpListener Listener;
@@ -36,9 +35,9 @@ namespace MusicStreamer
                     HttpListenerContext context = Listener.GetContext();
                     Process(context);
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    Console.WriteLine("Stop listening");
+                    Logger.SetError(string.Format("Streamer error: [{0}]", e.Message));
                 }
             }
         }
@@ -80,7 +79,7 @@ namespace MusicStreamer
         public void Dispose()
         {
             Dispose(true);
-            //GC.SuppressFinalize(this);            
+            GC.SuppressFinalize(this);            
         }
     }
 }

@@ -41,6 +41,7 @@
             this.lbTrackQueue = new System.Windows.Forms.Label();
             this.btnOpen = new System.Windows.Forms.Button();
             this.fbdOpen = new System.Windows.Forms.FolderBrowserDialog();
+            this.btnClearQueue = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lbPlayingNow
@@ -119,15 +120,15 @@
             this.lbTracksQueue.ItemHeight = 20;
             this.lbTracksQueue.Items.AddRange(new object[] {
             " "});
-            this.lbTracksQueue.Location = new System.Drawing.Point(16, 118);
+            this.lbTracksQueue.Location = new System.Drawing.Point(16, 138);
             this.lbTracksQueue.Name = "lbTracksQueue";
-            this.lbTracksQueue.Size = new System.Drawing.Size(372, 322);
+            this.lbTracksQueue.Size = new System.Drawing.Size(372, 302);
             this.lbTracksQueue.TabIndex = 6;
             // 
             // lbTrackQueue
             // 
             this.lbTrackQueue.AutoSize = true;
-            this.lbTrackQueue.Location = new System.Drawing.Point(12, 95);
+            this.lbTrackQueue.Location = new System.Drawing.Point(12, 102);
             this.lbTrackQueue.Name = "lbTrackQueue";
             this.lbTrackQueue.Size = new System.Drawing.Size(112, 20);
             this.lbTrackQueue.TabIndex = 7;
@@ -145,12 +146,24 @@
             this.btnOpen.UseVisualStyleBackColor = false;
             this.btnOpen.Click += new System.EventHandler(this.BtnOpen_Click);
             // 
+            // btnClearQueue
+            // 
+            this.btnClearQueue.BackColor = System.Drawing.Color.GhostWhite;
+            this.btnClearQueue.Location = new System.Drawing.Point(271, 93);
+            this.btnClearQueue.Name = "btnClearQueue";
+            this.btnClearQueue.Size = new System.Drawing.Size(117, 39);
+            this.btnClearQueue.TabIndex = 9;
+            this.btnClearQueue.Text = "Clear queue";
+            this.btnClearQueue.UseVisualStyleBackColor = false;
+            this.btnClearQueue.Click += new System.EventHandler(this.BtnClearQueue_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.GhostWhite;
             this.ClientSize = new System.Drawing.Size(1226, 451);
+            this.Controls.Add(this.btnClearQueue);
             this.Controls.Add(this.btnOpen);
             this.Controls.Add(this.lbTrackQueue);
             this.Controls.Add(this.lbTracksQueue);
@@ -185,6 +198,7 @@
         private System.Windows.Forms.ColumnHeader chFile;
         private System.Windows.Forms.Button btnOpen;
         private System.Windows.Forms.FolderBrowserDialog fbdOpen;
+        private System.Windows.Forms.Button btnClearQueue;
     }
 }
 
