@@ -1,7 +1,11 @@
-﻿using System;
+﻿//
+//   MainForm - главное окно программы
+//
+//
+//
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace MusicStreamer
@@ -17,9 +21,18 @@ namespace MusicStreamer
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            Streamer = new Streamer(8080);
-            Streamer.Player.OnStatusUpdate += Player_OnStatusUpdate;
-            Streamer.Player.OnFileListUpdate += Player_OnFileListUpdate;
+            try
+            {
+                Streamer = new Streamer(8080);
+                Streamer.Player.OnStatusUpdate += Player_OnStatusUpdate;
+                Streamer.Player.OnFileListUpdate += Player_OnFileListUpdate;
+            }
+            catch (Exception exeption)
+            {
+                MessageBox.Show("Error in starting application. Check log file.");
+                Logger.SetError(string.Format("Streamer: can't create HttpListener. Error [{0}]", exeption.Message));
+                Environment.Exit(-1);
+            }
         }
         private object Player_OnFileListUpdate(List<MusicFile> queue)
         {

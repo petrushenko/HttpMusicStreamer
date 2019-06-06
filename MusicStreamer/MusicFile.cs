@@ -1,4 +1,10 @@
-﻿using NAudio.Wave;
+﻿//
+//   MusicFile - класс для работы с метаданными аудио
+//
+//
+//
+
+using NAudio.Wave;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Threading;

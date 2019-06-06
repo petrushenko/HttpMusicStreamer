@@ -1,11 +1,15 @@
-﻿using NAudio.Wave;
+﻿//
+//   MusicPlayer - класс для записи фреймов аудиофайлов в поток слушателей
+//
+//
+//
+using NAudio.Wave;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Windows.Forms;
 
 namespace MusicStreamer
 {
@@ -112,8 +116,5 @@ namespace MusicStreamer
                 }    
             }
         }
-
-
-
     }
 }

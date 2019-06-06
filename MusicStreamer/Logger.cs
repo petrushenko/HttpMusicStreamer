@@ -1,9 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿//
+//   Logger - класс для сбора ошибок программы
+//
+//
+//
+
+using System;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace MusicStreamer
 {
@@ -15,7 +18,7 @@ namespace MusicStreamer
         {
             using (StreamWriter streamWriter = new StreamWriter(LogFile, true, Encoding.UTF8))
             {
-                streamWriter.WriteLine(DateTime.Now.ToString()+ ":" + error);
+                streamWriter.WriteLine(DateTime.Now.ToString() + ":" + error);
             }
         }
     }

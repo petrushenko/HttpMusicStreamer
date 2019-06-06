@@ -1,4 +1,10 @@
-﻿using System;
+﻿//
+//   Streamer - класс для принятий запросов, их обработки и установки соединения
+//
+//
+//
+
+using System;
 using System.Net;
 using System.Text;
 using System.Threading;
@@ -20,6 +26,7 @@ namespace MusicStreamer
             Listener = new HttpListener();
             Listener.Prefixes.Add("http://+:" + port + "/");
             Listener.Start();
+
             IsWaiting = true;
             WaitingForConnectionsThread = new Thread(WaitForConnections);
             WaitingForConnectionsThread.Start();
